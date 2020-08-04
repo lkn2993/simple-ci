@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Home Page</title>
+    <link th:href="@{/css/builds.css}" href="/css/builds.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <a th:if="${!sha.equals('')}" th:href="@{/builds}">Back to all builds</a>
+    <h1>Hello !</h1>
+    <p>Welcome to Simple-CI</p>
+    <p th:if="${sha.equals('')}">Current builds history</p>
+    <p th:if="${!sha.equals('')}" th:text="${'Commit: ' + sha}"></p>
+    <table>
+        <thead>
+            <tr>
+                <th>repoFullName</th>
+                <th>Date Created</th>
+                <th>Date Start</th>
+                <th>Date Finish</th>
+                <th>SHA</th>
+                <th>Build Status</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody th:each="bD : ${buildsToShow}">
+            <tr>
+                <td th:text="${bD.getRepoFullName()}"></td>
+                <td th:text="${bD.getDateCreated()}"></td>
+                <td th:text="${bD.getDateStart()}"></td>
+                <td th:text="${bD.getDateFinish()}"></td>
+                <td><a th:text="${bD.getSha()}" th:href="@{/builds(sha=${bD.getSha()})}"></a></td>
+                <td th:text="${bD.getBuildStatus()}"></td>
+                <td th:text="${bD.getMessage()}"></td>
+            </tr>
+            <tr th:if="${!sha.equals('')}" th:each="bL, i : ${bD.getBuildLog()}">
+                <td th:text="${i.index+1 + ':' + bL}"colspan="7"></td>
+            </tr>
+        </tbody>
+    </table>
+    <form th:if="${page > 1}" th:action="@{/builds}" action="/builds" method="get">
+        <input type="hidden" name="page"  th:value="${page - 1}" value="" maxlength="10" placeholder="pageNum" />
+        <input type="hidden" name="sha"  th:value="${sha}" value="" maxlength="100" placeholder="sha" />
+        <button type="submit">&lt;</button>
+    </form>
+    <form th:if="${buildsToShow.size()} > 50" th:action="@{/builds}" action="/builds">
+        <input type="hidden" name="page"  th:value="${page + 1}" value="" maxlength="10" placeholder="pageNum" />
+        <input type="hidden" name="sha"  th:value="${sha}" value="" maxlength="100" placeholder="sha" />
+        <button type="submit">&gt;</button>
+    </form>
+
+</body>
+</html>

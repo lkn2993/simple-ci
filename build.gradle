@@ -1,0 +1,61 @@
+buildscript {
+	ext {
+		springBootVersion = '2.1.2.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'org'
+version = '0.0.1'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
+	implementation 'org.springframework.boot:spring-boot-starter-integration'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-web-services'
+	implementation 'org.springframework.integration:spring-integration-http'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	runtimeOnly 'mysql:mysql-connector-java'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    // https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server
+    // compile group: 'org.eclipse.jetty', name: 'jetty-server', version: '9.4.14.v20181114'
+    // https://mvnrepository.com/artifact/javax.servlet/servlet-api
+    // compile group: 'javax.servlet', name: 'servlet-api', version: '2.5'
+    // https://mvnrepository.com/artifact/org.json/json
+	implementation group: 'org.json', name: 'json', version: '20180813'
+    // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.7'
+    // https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit
+	implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.2.1.201812262042-r'
+    //compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.+'
+    //compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.+'
+
+}
+
+
+sourceSets {
+    main.java.srcDir "src/main/java"
+    test.java.srcDir "src/test/java"
+}
+
+if (hasProperty('buildScan')) {
+	buildScan {
+		termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+		termsOfServiceAgree = 'yes'
+	}
+}
